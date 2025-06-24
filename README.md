@@ -83,15 +83,17 @@ python main_agents.py
 ```
 ├── backend/                 # FastAPI backend
 │   ├── api/                # REST API endpoints
-│   ├── core/               # Configuration and exceptions
+│   ├── config/             # Configuration files
+│   ├── core/               # Core configuration and exceptions
 │   ├── database/           # Database connections and knowledge
 │   ├── engines/            # Processing engines (query, analysis, AI)
 │   ├── routing/            # Intelligent query routing
 │   └── services/           # Business logic services
-├── agents/                 # AutoGen agent system
+├── agents/                 # AutoGen agent system + orchestration scripts
 ├── react-frontend/         # React web interface
+├── scripts/                # Setup and utility scripts
 ├── tests/                  # Test suite
-└── docs/                   # Documentation
+└── docs/                   # Complete project documentation
 ```
 
 ## 🛠️ Technologies
