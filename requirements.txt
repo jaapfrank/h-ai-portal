@@ -1,0 +1,43 @@
+autogen>=0.2.18
+# FastAPI and web framework
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+
+# Database connectivity
+pyodbc==5.2.0
+dbfread==2.0.7
+
+# LDAP/Active Directory
+ldap3==2.9.1
+
+# HTTP requests
+requests==2.32.3
+
+# Streamlit (for admin panel)
+streamlit==1.40.2
+
+# Claude AI SDK
+anthropic==0.42.0
+
+# Data processing
+pandas==2.2.3
+numpy==2.2.1
+
+# Visualization libraries
+matplotlib==3.10.0
+seaborn==0.13.2
+plotly==5.24.1
+
+# Configuration and utilities
+python-dotenv==1.0.1
+pydantic==2.10.3
+
+# Development and testing
+pytest==8.3.4
+pytest-asyncio==0.24.0
+pytest-html==4.1.1
+pytest-cov==6.0.0
+pytest-mock==3.14.0
+sqlalchemy==2.0.36
+pytest-xdist==3.5.0  # Parallel test execution
+faker==33.1.0  # Test data generation

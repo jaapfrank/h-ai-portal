@@ -1,0 +1,8 @@
+{
+  "sql_host": "srv-dc-sql2019\\\\SQLEXPRESS",
+  "sql_db": "Ridder",
+  "sql_user": "",
+  "sql_pass": "",
+  "trusted_connection": "yes",
+  "driver": "ODBC Driver 17 for SQL Server"
+}

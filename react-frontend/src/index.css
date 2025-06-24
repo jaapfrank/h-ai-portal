@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-hoeflon-200;
+    /* Enable text selection for ALL elements */
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+  }
+  
+  body {
+    @apply font-sans text-hoeflon-900 bg-hoeflon-50;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Enable text selection everywhere */
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold text-hoeflon-900;
+  }
+}
+
+@layer components {
+  /* Hoeflon Brand Elements */
+  .hoeflon-gradient {
+    background: linear-gradient(135deg, #475569 0%, #334155 100%);
+  }
+  
+  .hoeflon-accent-gradient {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  }
+  
+  /* Button Styles */
+  .btn-hoeflon {
+    @apply bg-hoeflon-600 hover:bg-hoeflon-700 text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md;
+  }
+  
+  .btn-hoeflon-outline {
+    @apply border-2 border-hoeflon-600 text-hoeflon-600 hover:bg-hoeflon-600 hover:text-white font-medium px-4 py-2 rounded-lg transition-all duration-200;
+  }
+  
+  .btn-hoeflon-accent {
+    @apply bg-hoeflon-orange hover:bg-orange-600 text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md;
+  }
+  
+  /* Card Styles */
+  .card-hoeflon {
+    @apply bg-white rounded-xl border border-hoeflon-200 shadow-hoeflon hover:shadow-hoeflon-lg transition-shadow duration-200;
+  }
+  
+  .card-hoeflon-dark {
+    @apply bg-hoeflon-800 border-hoeflon-700 text-white;
+  }
+  
+  /* Input Styles */
+  .input-hoeflon {
+    @apply w-full px-4 py-3 border border-hoeflon-300 rounded-lg focus:ring-2 focus:ring-hoeflon-500 focus:border-hoeflon-500 transition-colors duration-200 bg-white text-hoeflon-900 placeholder-hoeflon-400;
+  }
+  
+  /* Status Indicators */
+  .status-online {
+    @apply bg-green-100 text-green-800 border-green-200;
+  }
+  
+  .status-offline {
+    @apply bg-red-100 text-red-800 border-red-200;
+  }
+  
+  .status-warning {
+    @apply bg-hoeflon-orange-light text-orange-800 border-orange-200;
+  }
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Chat animations */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.typing-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #9ca3af;
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-indicator:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.typing-indicator:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes typing {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Force text selection AND copying on all content */
+.prose, .prose *, 
+.chat-message, .chat-message *,
+div, span, p, h1, h2, h3, h4, h5, h6,
+pre, code, blockquote, li {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  pointer-events: auto !important;
+}
+
+/* Specifically enable for ReactMarkdown content */
+.prose * {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  pointer-events: auto !important;
+}
+
+/* Override any Tailwind classes that might disable selection */
+.select-none {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+/* Ensure all interactive elements still allow text selection */
+button, .btn, .button {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
