@@ -35,7 +35,7 @@ azure-ai-documentintelligence==1.0.0
 
 # Data processing
 pandas==2.2.3
-numpy==2.2.1
+numpy>=1.21.6,<1.28.0
 
 # Visualization libraries
 matplotlib==3.10.0
@@ -55,3 +55,4 @@ pytest-mock==3.14.0
 sqlalchemy==2.0.36
 pytest-xdist==3.5.0  # Parallel test execution
 faker==33.1.0  # Test data generation
+blosc2>=3.5.1  # Required by tables library
