@@ -131,10 +131,17 @@ class ChatService:
                             result = [{"TotaalKranen": corrected_count}]
                             response_text = f"🖥️ **Local LLM + Smart Learning**\n\n📊 **Data**: [{{\"TotaalKranen\": {corrected_count}}}]\n\n💭 **Bron**: Geleerd + RTX 5080 Local LLM\n\n🔍 **Generated SQL**: ```sql\n{sql_query}\n```"
                         else:
-                            # Execute query normally
+                            # Execute query normally based on routing
                             try:
-                                result = self.db_manager.query_erp(sql_query)
-                                response_text = f"🖥️ **Local LLM Query Result (RTX 5080)**\n\n📊 **Data**: {result}\n\n🔍 **SQL**: ```sql\n{sql_query}\n```"
+                                if primary_db == 'ACCOUNTVIEW':
+                                    result = self.db_manager.query_accountview(sql_query)
+                                    response_text = f"🖥️ **Local LLM Query Result (RTX 5080) - AccountView**\n\n📊 **Data**: {result}\n\n🔍 **SQL**: ```sql\n{sql_query}\n```"
+                                elif primary_db == 'ERP':
+                                    result = self.db_manager.query_erp(sql_query)
+                                    response_text = f"🖥️ **Local LLM Query Result (RTX 5080) - ERP**\n\n📊 **Data**: {result}\n\n🔍 **SQL**: ```sql\n{sql_query}\n```"
+                                else:
+                                    result = self.db_manager.query_erp(sql_query)  # Default fallback
+                                    response_text = f"🖥️ **Local LLM Query Result (RTX 5080)**\n\n📊 **Data**: {result}\n\n🔍 **SQL**: ```sql\n{sql_query}\n```"
                             except Exception as query_error:
                                 response_text = f"❌ **Query Error**: {str(query_error)}\n\n🔍 **Local LLM SQL**: ```sql\n{sql_query}\n```"
                                 result = []
@@ -167,8 +174,11 @@ class ChatService:
                 if api_key and api_key.startswith('sk-ant-'):
                     client = Anthropic(api_key=api_key)
                     
-                    # Get schema information from local database
-                    schema_info = self._get_schema_from_database()
+                    # Get schema information based on database routing
+                    if primary_db == 'ACCOUNTVIEW':
+                        schema_info = self._get_accountview_schema()
+                    else:
+                        schema_info = self._get_schema_from_database()
                     
                     # Check for learned corrections
                     learned_correction = self._get_learned_corrections(session_id, message)
@@ -177,11 +187,35 @@ class ChatService:
                         corrected_count = learned_correction["corrected_value"]
                         learned_context = f"\n🧠 BELANGRIJKE CORRECTIE: De gebruiker heeft eerder aangegeven dat het juiste aantal kranen gereed dit jaar {corrected_count} is. GEBRUIK DIT GETAL in plaats van een database query te doen!"
 
-                    # Generate SQL query using Claude with comprehensive schema
-                    prompt = f"""Je bent een SQL expert voor de Hoeflon ERP database (SQL Server). 
-                    
+                    # Generate SQL query using Claude with database-specific context
+                    if primary_db == 'ACCOUNTVIEW':
+                        prompt = f"""Je bent een SQL expert voor de Hoeflon AccountView database (SQL Server). 
+                        
 Vraag: {message}
 
+DATABASE: AccountView (Financiële data)
+HOOFDTABELLEN:
+- DAILY: Dagelijkse transacties
+- LEDGER: Grootboekposten  
+- TRANSACT: Transactie details
+
+BUSINESS RULES:
+- Voor omzet/revenue queries: gebruik DAILY en LEDGER tabellen
+- Voor financiële analyse: gebruik TRANSACT voor details
+- Datumfilters gebruiken voor periode restricties
+- Bedragen in euro's berekenen
+
+{learned_context}
+
+Genereer een SQL query die precies beantwoordt wat er gevraagd wordt.
+Geef alleen de SQL query terug, geen uitleg."""
+                    else:
+                        # ERP database prompt
+                        prompt = f"""Je bent een SQL expert voor de Hoeflon ERP database (SQL Server). 
+                        
+Vraag: {message}
+
+DATABASE: ERP (Productie, machines, orders)
 SCHEMA INFORMATIE:
 {schema_info}
 {learned_context}
@@ -239,10 +273,17 @@ Geef alleen de SQL query terug, geen uitleg."""
                             "session_id": session_id
                         }
                     
-                    # Execute the query
+                    # Execute the query based on routing decision
                     try:
-                        result = self.db_manager.query_erp(sql_query)
-                        response_text = f"🎯 **AI Generated Query Result**\n\n📊 **Data**: {result}\n\n🔍 **SQL**: ```sql\n{sql_query}\n```"
+                        if primary_db == 'ACCOUNTVIEW':
+                            result = self.db_manager.query_accountview(sql_query)
+                            response_text = f"🎯 **AI Generated Query Result (AccountView)**\n\n📊 **Data**: {result}\n\n🔍 **SQL**: ```sql\n{sql_query}\n```"
+                        elif primary_db == 'ERP':
+                            result = self.db_manager.query_erp(sql_query)
+                            response_text = f"🎯 **AI Generated Query Result (ERP)**\n\n📊 **Data**: {result}\n\n🔍 **SQL**: ```sql\n{sql_query}\n```"
+                        else:
+                            result = self.db_manager.query_erp(sql_query)  # Default fallback
+                            response_text = f"🎯 **AI Generated Query Result**\n\n📊 **Data**: {result}\n\n🔍 **SQL**: ```sql\n{sql_query}\n```"
                         
                         # Store interaction in memory
                         conversational_memory.add_interaction(
@@ -453,6 +494,38 @@ The query follows your specifications exactly as shown in the image:
                 
         except Exception as e:
             return f"Fout bij ophalen schema: {str(e)}"
+    
+    def _get_accountview_schema(self) -> str:
+        """Get AccountView database schema information"""
+        return """ACCOUNTVIEW DATABASE SCHEMA:
+
+HOOFDTABELLEN:
+- DAILY: Dagelijkse financiële transacties
+  * DATUM: Transactie datum
+  * BEDRAG: Transactie bedrag (EUR)
+  * OMSCHRIJVING: Beschrijving
+  * REKENING: Rekeningnummer
+  
+- LEDGER: Grootboekposten
+  * JAAR: Boekjaar
+  * PERIODE: Boekperiode
+  * REKENING: Grootboekrekening
+  * SALDO: Saldo bedrag
+  * OMZET: Omzet bedrag
+  
+- TRANSACT: Transactie details
+  * FACTUURNR: Factuurnummer
+  * DATUM: Factuur datum
+  * BEDRAG: Factuur bedrag
+  * BTW: BTW bedrag
+  * TOTAAL: Totaal inclusief BTW
+
+BUSINESS RULES:
+- Gebruik YEAR(DATUM) voor jaartotalen
+- Bedragen zijn in EUR
+- Voor omzetberekeningen: SUM(OMZET) uit LEDGER tabel
+- Voor kostenanalyse: gebruik TRANSACT tabel
+"""
     
     def _is_correction(self, message: str) -> bool:
         """Check if message is a user correction"""

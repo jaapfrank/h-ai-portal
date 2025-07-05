@@ -17,7 +17,7 @@ class IntelligentQueryRouter:
         self.database_capabilities = {
             "ERP": {
                 "description": "Production, machines, physical products, orders, suppliers",
-                "keywords": ["machine", "productie", "verkoop", "factuur", "klant", "leverancier", "order", "producten", "kraan", "hijskraan"],
+                "keywords": ["machine", "productie", "verkoop", "factuur", "klant", "leverancier", "order", "producten", "kraan", "hijskraan", "verkocht", "geproduceerd"],
                 "tables": ["V_R_SERVICEOBJECT", "V_R_SALESINVOICE", "V_R_RELATION", "V_R_PURCHASEORDER"],
                 "confidence_boost": 0.2
             },
@@ -29,7 +29,7 @@ class IntelligentQueryRouter:
             },
             "COMPANY_KNOWLEDGE": {
                 "description": "Employee info, organization, HR policies, contacts",
-                "keywords": ["directeur", "telefoonnummer", "verlof", "hr", "werknemers", "organisatie"],
+                "keywords": ["directeur", "telefoonnummer", "verlof", "hr", "werknemers", "organisatie", "werknemer", "persoon", "contact"],
                 "tables": ["hoeflon_company.db"],
                 "confidence_boost": 0.3
             }
