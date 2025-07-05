@@ -16,16 +16,16 @@ class IntelligentQueryRouter:
     def __init__(self):
         self.database_capabilities = {
             "ERP": {
-                "description": "Production, machines, sales invoices, customers, suppliers",
-                "keywords": ["machine", "productie", "verkoop", "factuur", "klant", "leverancier", "omzet", "order"],
+                "description": "Production, machines, physical products, orders, suppliers",
+                "keywords": ["machine", "productie", "verkoop", "factuur", "klant", "leverancier", "order", "producten", "kraan", "hijskraan"],
                 "tables": ["V_R_SERVICEOBJECT", "V_R_SALESINVOICE", "V_R_RELATION", "V_R_PURCHASEORDER"],
                 "confidence_boost": 0.2
             },
             "ACCOUNTVIEW": {
-                "description": "Financial data, accounting, cash flow, revenue analysis", 
-                "keywords": ["financieel", "boekhouding", "cash", "stroom", "analyse", "kosten"],
+                "description": "Financial data, accounting, cash flow, revenue, profit analysis", 
+                "keywords": ["financieel", "boekhouding", "cash", "stroom", "analyse", "kosten", "omzet", "winst", "resultaat", "balans"],
                 "tables": ["DAILY", "LEDGER", "TRANSACT"],
-                "confidence_boost": 0.15
+                "confidence_boost": 0.25
             },
             "COMPANY_KNOWLEDGE": {
                 "description": "Employee info, organization, HR policies, contacts",
