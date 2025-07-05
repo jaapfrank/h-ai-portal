@@ -10,7 +10,12 @@ import asyncio
 import json
 
 from letta_client import Letta
-from letta_client.exceptions import LettaError
+try:
+    from letta_client.exceptions import LettaError
+except ImportError:
+    # Define a basic exception if letta_client is not available
+    class LettaError(Exception):
+        pass
 
 from ..core.config import get_config
 

@@ -11,10 +11,10 @@ import io
 from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile, File, Form, BackgroundTasks
 from pydantic import BaseModel, Field
 
-from ..agents.invoice_agent import get_invoice_agent
-from ..agents.receipt_agent import get_receipt_agent
-from ..services.graph_api_service import get_graph_service
-from ..services.document_intelligence_service import get_document_intelligence_service
+from agents.invoice_agent import get_invoice_agent
+from agents.receipt_agent import get_receipt_agent
+from services.graph_api_service import get_graph_service
+from services.document_intelligence_service import get_document_intelligence_service
 
 logger = logging.getLogger(__name__)
 

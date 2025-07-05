@@ -17,9 +17,16 @@ if curl -s http://localhost:8504/health > /dev/null; then
     echo -e "${GREEN}✅ Backend already running on port 8504${NC}"
 else
     echo -e "${YELLOW}📦 Starting backend on port 8504...${NC}"
+    
+    # Activate virtual environment if it exists
+    if [ -f "../venv/bin/activate" ]; then
+        echo "Activating virtual environment..."
+        source ../venv/bin/activate
+    fi
+    
     cd backend
     # Start backend in background
-    nohup python -m uvicorn main:app --host 0.0.0.0 --port 8504 --reload > ../logs/backend.log 2>&1 &
+    nohup python3 -m uvicorn main:app --host 0.0.0.0 --port 8504 --reload > ../logs/backend.log 2>&1 &
     BACKEND_PID=$!
     echo "Backend PID: $BACKEND_PID"
     

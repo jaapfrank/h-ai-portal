@@ -10,7 +10,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Header
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
-from ..services.letta_memory_service import get_letta_service, LettaMemoryService
+from services.letta_memory_service import get_letta_service, LettaMemoryService
 from ..database.memory_db import get_db_context, get_memory_db
 from ..models.user_context import (
     UserContext, UserSession, UserPreferences,

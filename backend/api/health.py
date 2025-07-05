@@ -18,6 +18,15 @@ class HealthResponse(BaseModel):
     version: str
     database_status: str
 
+@router.get("/health")
+async def simple_health_check():
+    """Simple health check endpoint"""
+    return {
+        "status": "healthy",
+        "timestamp": datetime.utcnow().isoformat(),
+        "service": "hoeflon-ai-portal"
+    }
+
 @router.get("/status")
 async def health_check():
     """System health check endpoint - comprehensive status for frontend"""
