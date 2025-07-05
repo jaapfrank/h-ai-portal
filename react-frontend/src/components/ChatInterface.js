@@ -192,9 +192,9 @@ const ChatInterface = ({ systemStatus }) => {
       const aiMessage = {
         id: Date.now() + 1,
         type: response.suggestions && response.suggestions.length > 0 ? 'error' : 'assistant',
-        content: response.antwoord,
+        content: response.response || response.antwoord, // Support both response formats
         sqlQuery: response.sql_query,
-        results: response.resultaten,
+        results: response.result || response.resultaten, // Support both result formats
         chartData: response.chart_data,
         drillDownSuggestions: response.drill_down_suggestions,
         sessionId: response.session_id,
@@ -246,7 +246,7 @@ const ChatInterface = ({ systemStatus }) => {
       const aiMessage = {
         id: Date.now(),
         type: 'assistant',
-        content: data.antwoord,
+        content: data.response || data.antwoord, // Support both response formats
         sqlQuery: data.sql_query,
         results: data.resultaten,
         chartData: data.chart_data,
@@ -390,7 +390,7 @@ const ChatInterface = ({ systemStatus }) => {
           </div>
         )}
 
-        {messages.filter(message => message && message.id).map((message) => (
+        {messages.filter(message => message && message.id && message.content).map((message) => (
           <div
             key={message.id}
             className={`fade-in ${
@@ -461,7 +461,7 @@ const ChatInterface = ({ systemStatus }) => {
 
               <div className="prose prose-sm max-w-none">
                 {/* Simple answer detection for cleaner responses */}
-                {message.content.includes('🎯 **Antwoord**:') ? (
+                {message.content && message.content.includes('🎯 **Antwoord**:') ? (
                   <div className="space-y-3">
                     {/* Extract and highlight the main answer */}
                     {(() => {
@@ -494,7 +494,7 @@ const ChatInterface = ({ systemStatus }) => {
                           )}
                           
                           {/* Show follow-up options if available */}
-                          {message.content.includes('🔍 **Interactieve commands**') && (
+                          {message.content && message.content.includes('🔍 **Interactieve commands**') && (
                             <details className="mt-3">
                               <summary className="cursor-pointer text-sm font-medium text-hoeflon-700 hover:text-hoeflon-800">
                                 💡 Meer opties en details...
@@ -525,7 +525,7 @@ const ChatInterface = ({ systemStatus }) => {
               )}
 
               {/* Dashboard Link - Open in new tab */}
-              {message.sqlQuery && (message.sqlQuery.includes('Dashboard') || message.content.toLowerCase().includes('dashboard')) && (
+              {message.sqlQuery && (message.sqlQuery.includes('Dashboard') || (message.content && message.content.toLowerCase().includes('dashboard'))) && (
                 <div className="mt-4 p-4 bg-gradient-to-r from-hoeflon-50 to-hoeflon-100 rounded-lg border border-hoeflon-200">
                   <div className="flex items-center space-x-3 mb-3">
                     <BarChart3 className="h-5 w-5 text-hoeflon-600" />

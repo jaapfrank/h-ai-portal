@@ -7,6 +7,10 @@ uvicorn[standard]==0.32.1
 pyodbc==5.2.0
 dbfread==2.0.7
 
+# PostgreSQL for memory/user context storage
+psycopg2-binary==2.9.10
+pgvector==0.2.5
+
 # LDAP/Active Directory
 ldap3==2.9.1
 
@@ -18,6 +22,16 @@ streamlit==1.40.2
 
 # Claude AI SDK
 anthropic==0.42.0
+
+# Letta Memory Agent
+letta-client==0.1.190
+
+# Microsoft Graph API
+azure-identity==1.18.0
+msgraph-sdk==1.5.4
+
+# Azure Document Intelligence (Form Recognizer)
+azure-ai-documentintelligence==1.0.0
 
 # Data processing
 pandas==2.2.3

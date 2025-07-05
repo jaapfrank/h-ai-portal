@@ -22,7 +22,7 @@ class ConversationalMemoryEngine:
     """
     
     def __init__(self, memory_storage_path: str = None):
-        self.memory_storage_path = memory_storage_path or "/home/jaapfrank/Hoeflon Ridder/Ridder AI/memory"
+        self.memory_storage_path = memory_storage_path or "/tmp/hoeflon_memory"
         os.makedirs(self.memory_storage_path, exist_ok=True)
         self.sessions = {}  # Active session memory
         

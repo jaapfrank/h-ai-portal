@@ -8,6 +8,7 @@ import MLStatsPage from './pages/MLStatsPage';
 import MLReportsPage from './pages/MLReportsPage';
 import EnterpriseFeatures from './components/EnterpriseFeatures';
 import AdvancedDataVisualization from './components/AdvancedDataVisualization';
+import DocumentUpload from './components/DocumentUpload';
 import { checkSystemStatus } from './services/api';
 
 function App() {
@@ -99,6 +100,16 @@ function App() {
             <Header />
             <main className="container mx-auto px-4 py-6 max-w-7xl">
               <AdvancedDataVisualization />
+            </main>
+          </div>
+        } />
+        
+        {/* Document Upload Route - Full screen */}
+        <Route path="/documents" element={
+          <div className="min-h-screen bg-gradient-to-br from-hoeflon-50 to-hoeflon-100">
+            <Header />
+            <main className="container mx-auto px-4 py-6 max-w-7xl">
+              <DocumentUpload />
             </main>
           </div>
         } />

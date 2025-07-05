@@ -8,7 +8,9 @@ import {
   Brain, 
   Shield,
   Clock,
-  Cpu
+  Cpu,
+  FileText,
+  Upload
 } from 'lucide-react';
 import { 
   testSqlConnection, 
@@ -24,17 +26,35 @@ const StatusPanel = ({ status, onRefresh }) => {
   const getStatusIcon = (statusText) => {
     if (!statusText) return <AlertCircle className="h-5 w-5 text-gray-400" />;
     
-    if (statusText.includes('OK')) {
+    // Check for positive status indicators
+    if (statusText.includes('✅') || statusText.includes('OK') || statusText.includes('Connected') || statusText.includes('Loaded')) {
       return <CheckCircle className="h-5 w-5 text-green-500" />;
-    } else {
+    } 
+    // Check for negative status indicators
+    else if (statusText.includes('❌') || statusText.includes('Failed') || statusText.includes('Error') || statusText.includes('Missing')) {
       return <XCircle className="h-5 w-5 text-red-500" />;
+    }
+    // Default warning state
+    else {
+      return <AlertCircle className="h-5 w-5 text-yellow-500" />;
     }
   };
 
   const getStatusColor = (statusText) => {
     if (!statusText) return 'text-gray-600';
-    if (statusText.includes('OK')) return 'text-green-600';
-    return 'text-red-600';
+    
+    // Check for positive status indicators
+    if (statusText.includes('✅') || statusText.includes('OK') || statusText.includes('Connected') || statusText.includes('Loaded')) {
+      return 'text-green-600';
+    }
+    // Check for negative status indicators 
+    else if (statusText.includes('❌') || statusText.includes('Failed') || statusText.includes('Error') || statusText.includes('Missing')) {
+      return 'text-red-600';
+    }
+    // Default warning state
+    else {
+      return 'text-yellow-600';
+    }
   };
 
   const runIndividualTest = async (testType) => {
@@ -140,7 +160,12 @@ const StatusPanel = ({ status, onRefresh }) => {
               </div>
               
               <div className="flex items-center space-x-3">
-                {getStatusIcon(item.status)}
+                <div className="flex items-center space-x-2">
+                  {getStatusIcon(item.status)}
+                  <span className={`text-xs font-medium ${getStatusColor(item.status)}`}>
+                    {item.status || 'Unknown'}
+                  </span>
+                </div>
                 {item.testFunction && (
                   <button
                     onClick={item.testFunction}
@@ -226,6 +251,35 @@ const StatusPanel = ({ status, onRefresh }) => {
           className="w-full mt-4 px-3 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-200 text-xs font-medium border border-white/20"
         >
           View All Enterprise Features →
+        </button>
+      </div>
+
+      {/* Document Processing Card */}
+      <div className="bg-gradient-to-br from-hoeflon-orange to-amber-600 rounded-lg border border-hoeflon-orange/50 p-5 text-white">
+        <h3 className="text-sm font-bold mb-4 flex items-center space-x-2">
+          <FileText className="h-4 w-4 text-hoeflon-100" />
+          <span>Document Processing</span>
+        </h3>
+        <div className="space-y-3 text-xs">
+          <div className="flex justify-between items-center p-2 bg-hoeflon-orange/20 rounded backdrop-blur-sm">
+            <span className="text-hoeflon-100 font-medium">Invoice OCR:</span>
+            <span className="text-hoeflon-200 font-bold">Ready</span>
+          </div>
+          <div className="flex justify-between items-center p-2 bg-hoeflon-orange/20 rounded backdrop-blur-sm">
+            <span className="text-hoeflon-100 font-medium">Receipt Processing:</span>
+            <span className="text-hoeflon-200 font-bold">Active</span>
+          </div>
+          <div className="flex justify-between items-center p-2 bg-hoeflon-orange/20 rounded backdrop-blur-sm">
+            <span className="text-hoeflon-100 font-medium">ERP Integration:</span>
+            <span className="text-hoeflon-200 font-bold">Connected</span>
+          </div>
+        </div>
+        <button
+          onClick={() => navigate('/documents')}
+          className="w-full mt-4 px-3 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-200 text-xs font-medium border border-white/20 flex items-center justify-center space-x-2"
+        >
+          <Upload className="h-3 w-3" />
+          <span>Upload Documents →</span>
         </button>
       </div>
 
