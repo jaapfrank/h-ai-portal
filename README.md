@@ -153,10 +153,4 @@ curl -X POST http://localhost:8504/chat \
 4. Run tests
 5. Submit a pull request
 
-## 📄 License
 
-This project is proprietary software for Hoeflon B.V.
-
----
-
-**🏢 Hoeflon B.V. - Industrial Equipment & Innovation**
