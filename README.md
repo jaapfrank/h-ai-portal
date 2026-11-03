@@ -1,10 +1,10 @@
-# 🤖 Hoeflon AI Portal
+# 🤖 H AI Portal
 
 **AI-powered ERP chatbot for business intelligence and database queries**
 
 ## 🎯 Overview
 
-Hoeflon AI Portal is an intelligent chatbot system that answers business questions about the Hoeflon ERP system by generating and executing SQL queries against multiple databases, with AI-powered routing and cross-database transaction linking capabilities.
+H AI Portal is an intelligent chatbot system that answers business questions about the Hoeflon ERP system by generating and executing SQL queries against multiple databases, with AI-powered routing and cross-database transaction linking capabilities.
 
 ## 🏗️ Architecture
 
